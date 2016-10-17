@@ -88,7 +88,7 @@ void DataAugLayer<Dtype>::load_batch(Batch<Dtype>* batch) {
     cv::Mat img_original = DecodeDatumToCVMatNative(datum);
     cv::Mat cv_img;
 
-    cv::resize(img_original, cv_img, cv::Size(256+6, 256+6));
+    cv::resize(img_original, cv_img, cv::Size(256+25, 256+25));
 
     read_time += timer.MicroSeconds();
     timer.Start();
