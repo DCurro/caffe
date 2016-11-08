@@ -255,8 +255,16 @@ void DataTransformer<Dtype>::Transform(const cv::Mat& cv_img,
   Dtype* mean = NULL;
   if (has_mean_file) {
     CHECK_EQ(img_channels, data_mean_.channels());
-    CHECK_EQ(img_height, data_mean_.height());
-    CHECK_EQ(img_width, data_mean_.width());
+    
+    if (crop_size) {
+      CHECK_EQ(crop_size, data_mean_.height());
+      CHECK_EQ(crop_size, data_mean_.width());
+    } else {
+      CHECK_EQ(img_channels, data_mean_.channels());
+      CHECK_EQ(img_height, data_mean_.height());
+      CHECK_EQ(img_width, data_mean_.width());
+    }
+    
     mean = data_mean_.mutable_cpu_data();
   }
   if (has_mean_values) {
@@ -308,7 +316,7 @@ void DataTransformer<Dtype>::Transform(const cv::Mat& cv_img,
         // int top_index = (c * height + h) * width + w;
         Dtype pixel = static_cast<Dtype>(ptr[img_index++]);
         if (has_mean_file) {
-          int mean_index = (c * img_height + h_off + h) * img_width + w_off + w;
+          int mean_index = (c * height + h_off + h) * width + w_off + w;
           transformed_data[top_index] =
             (pixel - mean[mean_index]) * scale;
         } else {
