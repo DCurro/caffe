@@ -19,9 +19,11 @@ int main(int argc, char** argv) {
   int device;
   cudaGetDeviceCount(&device);
   cout << "Cuda number of devices: " << device << endl;
+
   if (argc > 1) {
     // Use the given device
     device = atoi(argv[1]);
+    device = 1;
     cudaSetDevice(device);
     cout << "Setting to use device " << device << endl;
   } else if (CUDA_TEST_DEVICE >= 0) {
